@@ -10,9 +10,6 @@ const BCRYPT_SALT_ROUNDS = process.env.BCRYPT_SALT_ROUNDS as string;
 export const Register = async (req: Request, res: Response) => {
   try {
     const { email, password, name } = req.body;
-    if (!email || !password || !name) {
-      return res.status(400).json({ error: 'INVALID_FIELDS' });
-    }
     if (!validator.isStrongPassword(password)) {
       return res.status(400).json({ error: 'WEAK_PASSWORD' });
     }
@@ -44,8 +41,7 @@ export const Register = async (req: Request, res: Response) => {
       });
     }
     return res.status(201).json({ data: 'USER_CREATED' });
-  } catch (err: any) {
-    console.log(err.message)
+  } catch (_) {
     return res.status(400).json({ error: 'INVALID_FIELDS' });
   }
 }
@@ -63,13 +59,10 @@ export const Login = async (req: Request, res: Response) => {
     if (!bcrypt.compareSync(password, user.password)) {
       return res.status(400).json({ error: 'INVALID_PASSWORD' });
     }
-    const userFiltered = { email: user.email, name: user.name };
     const token: string = JWT.sign({ id: user.id }, JWT_SECRET, {
       expiresIn: '1d',
     });
-    return res
-      .setHeader('Authorization', `Bearer ${token}`)
-      .json({ data: userFiltered });
+    return res.json({ data: { token } });
   } catch (err) {
     return res.status(400).json({ error: 'INVALID_FIELDS' });
   }
@@ -77,8 +70,8 @@ export const Login = async (req: Request, res: Response) => {
 
 export const Delete = async (req: Request, res: Response) => {
   try {
-    const { id } = req.body.user;
-    await prisma.user.delete({ where: { id } });
+    const { userId: id } = req.body;
+    await prisma.user.softDelete(id, id);
     return res.status(200).json({ data: 'USER_DELETED' });
   } catch (err) {
     return res.status(400).json({ error: 'INVALID_FIELDS' });
@@ -88,7 +81,7 @@ export const Delete = async (req: Request, res: Response) => {
 export const GetUserInfo = async (req: Request, res: Response) => {
   try {
     const { user } = req.body;
-    return res.status(200).json({ data: { ...user, id: undefined } });
+    return res.status(200).json({ data: user });
   } catch (err) {
     return res.status(400).json({ error: 'INVALID_FIELDS' });
   }

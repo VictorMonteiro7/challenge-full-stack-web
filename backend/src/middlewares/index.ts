@@ -20,9 +20,10 @@ export const CheckToken = async (
       select: { id: true, email: true, name: true }
     });
     if (!user) return res.status(400).json({ error: 'INVALID_TOKEN' });
-    req.body.user = user;
+    req.body.user = { ...user, id: undefined };
+    req.body.userId = user.id;
     next();
-  } catch (err: any) {
+  } catch (_) {
     return res.status(400).json({ error: 'INVALID_TOKEN' });
   }
 };

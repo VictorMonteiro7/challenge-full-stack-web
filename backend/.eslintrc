@@ -1,0 +1,15 @@
+{
+  "parser": "@typescript-eslint/parser",
+  "plugins": ["@typescript-eslint", "@stylistic"],
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended"
+  ],
+  "rules": {
+    "@typescript-eslint/no-unused-vars": "error",
+    "@typescript-eslint/space-before-blocks": "error",
+    "@stylistic/semi": "error",
+    "@stylistic/indent": ["error", 2],
+    "@stylistic/quotes": ["error", "single"]
+  }
+}
