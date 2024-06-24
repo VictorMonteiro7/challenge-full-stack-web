@@ -55,6 +55,7 @@ export const CreatePatient = async (req: Request, res: Response) => {
         name,
         document,
         email,
+        createdBy: req.body.userId,
         birthdate,
         gender,
         insuranceCardNumber,

@@ -15,6 +15,7 @@ model User {
   password  String
   relPatientCare RelPatientCare[]
   actionLogs ActionLogs[]
+  patient   Patient[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   deletedAt DateTime?
@@ -23,6 +24,8 @@ model User {
 model Patient {
   id        String   @id @default(cuid())
   name      String
+  createdBy User @relation(fields: [createdById], references: [id])
+  createdById String
   phones    ContactPatient[]
   document  String   @unique
   email     String   @unique
@@ -71,8 +74,8 @@ model ActionLogs {
   id        String   @id @default(cuid())
   user      User     @relation(fields: [userId], references: [id])
   userId    String
-  tableName String
-  tableId   String
+  modelName String
+  modelId   String
   action    Action
   modifiedFields String[]
   createdAt DateTime @default(now())
@@ -86,12 +89,4 @@ enum Gender {
 enum Action {
   UPDATE
   DELETE
-}
-
-enum TableName {
-  USER
-  PATIENT
-  CONTACT_PATIENT
-  PATIENT_CARE
-  REL_PATIENT_CARE
 }

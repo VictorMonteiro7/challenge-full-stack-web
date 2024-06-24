@@ -21,8 +21,8 @@ const prisma = new PrismaClient().$extends({
               data: {
                 userId,
                 action: 'DELETE',
-                tableName: modelName.toUpperCase(),
-                tableId: id,
+                modelName: modelName.toUpperCase(),
+                modelId: id,
                 createdAt: new Date(),
               },
             });
@@ -47,8 +47,8 @@ const prisma = new PrismaClient().$extends({
               data: {
                 userId,
                 action: 'UPDATE',
-                tableName: modelName.toUpperCase(),
-                tableId: id,
+                modelName: modelName.toUpperCase(),
+                modelId: id,
                 modifiedFields: Object.keys(args[0].data),
                 createdAt: new Date(),
               },
