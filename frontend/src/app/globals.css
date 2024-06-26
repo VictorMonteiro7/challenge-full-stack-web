@@ -3,14 +3,6 @@
 @tailwind utilities;
 @import "@radix-ui/themes/styles.css";
 
-:root {
-  --branco: #F1F1F1;
-  --preto: #010101;
-  --verde: #00D2D4;
-  --rosa: #ED1E79;
-  --azul-escuro: #004474;
-}
-
 * {
   box-sizing: border-box;
 }

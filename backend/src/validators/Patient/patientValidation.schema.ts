@@ -138,8 +138,17 @@ const listPatientSchema: JSONSchemaType<ListPatientsSchema> = {
 };
 
 type OptionalPatientSchema = {
-  [P in keyof PatientSchema]?: PatientSchema[P];
-};
+  name?: string;
+  phones?: {
+    id: string;
+    phone: string;
+  }[];
+  document?: string;
+  email?: string;
+  gender?: 'M' | 'F';
+  birthdate?: string;
+  insuranceCardNumber?: string;
+}
 
 const updatePatientSchema: JSONSchemaType<OptionalPatientSchema> = {
   type: 'object',
@@ -159,7 +168,22 @@ const updatePatientSchema: JSONSchemaType<OptionalPatientSchema> = {
       type: 'array',
       nullable: true,
       items: {
-        type: 'string',
+        type: 'object',
+        properties: {
+          id: {
+            type: 'string',
+            errorMessage: {
+              type: `${VALIDATION_ERRORS.TYPE} String`,
+            },
+          },
+          phone: {
+            type: 'string',
+            errorMessage: {
+              type: `${VALIDATION_ERRORS.TYPE} String`,
+            },
+          },
+        },
+        required: ['id', 'phone'],
         errorMessage: {
           type: `${VALIDATION_ERRORS.TYPE} String`,
         },
@@ -214,7 +238,6 @@ const updatePatientSchema: JSONSchemaType<OptionalPatientSchema> = {
       },
     },
   },
-  additionalProperties: false,
   minProperties: 1,
 };
 

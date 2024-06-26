@@ -1,10 +1,15 @@
 import express, { ErrorRequestHandler, Application } from 'express';
 import dotenv from 'dotenv';
+import helmet from 'helmet';
+import cors from 'cors';
 import routes from './routes';
 
 dotenv.config();
 const app: Application = express();
-
+app.use(helmet());
+app.use(cors({
+  origin: '*',
+}));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use('/', routes);
@@ -14,7 +19,7 @@ app.use('*', (req, res) => {
 
 const errorHandler: ErrorRequestHandler = (err, req, res) => {
   console.error(err);
-  res.status(500).json({ error: 'INTERNAL_SERVER_ERROR' });
+  res.status(500).json({ error: 'INTERNAL_ERROR' });
 };
 
 app.use(errorHandler);

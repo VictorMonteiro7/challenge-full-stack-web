@@ -24,10 +24,8 @@ const userSchema: JSONSchemaType<UserSchema> = {
       type: 'string',
       nullable: false,
       minLength: 4,
-      maxLength: 20,
       errorMessage: {
         minLength: `${VALIDATION_ERRORS.MIN_LENGTH} 4 character`,
-        maxLength: VALIDATION_ERRORS.MAX_LENGTH,
         type: `${VALIDATION_ERRORS.TYPE} String`,
       },
     },

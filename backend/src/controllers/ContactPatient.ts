@@ -33,7 +33,7 @@ export const CreateContactPatient = async (req: Request, res: Response) => {
     });
     return res.status(201).json({ data: 'CONTACT_CREATED' });
   } catch (_) {
-    return res.status(400).json({ error: 'INVALID_FIELDS' });
+    return res.status(500).json({ error: 'INTERNAL_ERROR' });
   }
 };
 
@@ -74,7 +74,7 @@ export const ListContactPatient = async (req: Request, res: Response) => {
     const contacts = await prisma.contactPatient.findMany(data);
     return res.status(200).json({ data: contacts });
   } catch (_) {
-    return res.status(400).json({ error: 'INVALID_FIELDS' });
+    return res.status(500).json({ error: 'INTERNAL_ERROR' });
   }
 };
 
@@ -103,7 +103,7 @@ export const UpdateContactPatient = async (req: Request, res: Response) => {
     });
     return res.status(200).json({ data: 'CONTACT_UPDATED' });
   } catch (_) {
-    return res.status(400).json({ error: 'INVALID_FIELDS' });
+    return res.status(500).json({ error: 'INTERNAL_ERROR' });
   }
 };
 
@@ -123,6 +123,6 @@ export const DeleteContactPatient = async (req: Request, res: Response) => {
     await prisma.contactPatient.softDelete(contactId, userId);
     return res.status(200).json({ data: 'CONTACT_DELETED' });
   } catch (_) {
-    return res.status(400).json({ error: 'INVALID_FIELDS' });
+    return res.status(500).json({ error: 'INTERNAL_ERROR' });
   }
 };

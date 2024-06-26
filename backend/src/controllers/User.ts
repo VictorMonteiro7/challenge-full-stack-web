@@ -17,7 +17,7 @@ export const Register = async (req: Request, res: Response) => {
       return res.status(400).json({ error: 'INVALID_EMAIL' });
     }
     const userExists = await prisma.user.findFirst({ where: { email } });
-    if (!userExists?.deletedAt) {
+    if (userExists && !userExists.deletedAt) {
       return res.status(400).json({ error: 'USER_ALREADY_EXISTS' });
     }
     const salt = bcrypt.genSaltSync(parseInt(BCRYPT_SALT_ROUNDS));
@@ -42,7 +42,7 @@ export const Register = async (req: Request, res: Response) => {
     }
     return res.status(201).json({ data: 'USER_CREATED' });
   } catch (_) {
-    return res.status(400).json({ error: 'INVALID_FIELDS' });
+    return res.status(500).json({ error: 'INTERNAL_ERROR' });
   }
 }
 
@@ -64,7 +64,7 @@ export const Login = async (req: Request, res: Response) => {
     });
     return res.json({ data: { token } });
   } catch (err) {
-    return res.status(400).json({ error: 'INVALID_FIELDS' });
+    return res.status(500).json({ error: 'INTERNAL_ERROR' });
   }
 }
 
@@ -74,7 +74,7 @@ export const Delete = async (req: Request, res: Response) => {
     await prisma.user.softDelete(id, id);
     return res.status(200).json({ data: 'USER_DELETED' });
   } catch (err) {
-    return res.status(400).json({ error: 'INVALID_FIELDS' });
+    return res.status(500).json({ error: 'INTERNAL_ERROR' });
   }
 };
 
@@ -83,6 +83,6 @@ export const GetUserInfo = async (req: Request, res: Response) => {
     const { user } = req.body;
     return res.status(200).json({ data: user });
   } catch (err) {
-    return res.status(400).json({ error: 'INVALID_FIELDS' });
+    return res.status(500).json({ error: 'INTERNAL_ERROR' });
   }
 }
